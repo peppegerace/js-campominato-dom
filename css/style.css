@@ -8,7 +8,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: cadetblue;
+  background-color: #4ed4b8;
 }
 
 header {
@@ -45,11 +45,11 @@ main {
   align-items: center;
   width: calc(100% / 10);
   aspect-ratio: 1 / 1;
-  background-color: brown;
+  background-color:cornflowerblue;
   color: white;
   font-size: 24px;
   border: 2px solid white;
-  cursor: pointer;
+  cursor: cell;
 }
 .square span {
   display: none;
@@ -63,12 +63,12 @@ main {
   display: block;
 }
 
-.square.clicked.odd {
-  background-color: coral;
+.bomba {
+  background-color: rgb(221, 20, 2);
 }
 
 
-.square.clicked.even {
+.vuoto {
   background-color: darkcyan;
 }
 

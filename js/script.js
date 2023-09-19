@@ -16,63 +16,135 @@
 
 // 8. Aggiungere il quadrato al conteiner.
 
+/***************SECONDA PARTE *************** */
 
-// 1.
+// 9. Creare un array vuoto per le bombe.
+
+// 10. Generare 16 numeri casuali unici ed inserirli nell'array delle bombe.
+
+// 11. Creare un array per tenere traccia delle celle cliccate.
+
+// 12. Creare una funzione che avvii il gioco.
+
+// 13. Determinare le condizioni per la vittoria o la sconfitta nel gioco.
+
+// 14. Alla fine del gioco, mostra il punteggio, visualizza tutte le bombe in griglia e congela il gioco.
+
+
+// Variabili globali
 const buttonGenerator = document.querySelector('.btn-custom')
-
 const levelSelect = document.querySelector('#level');
-
-// data
 let squareNumbers;
 const levels = [100, 81, 49];
+let bombe = []; 
+let giocoFinito = false;
+let punteggio = 0;
+const contenitore = document.querySelector('.wrapper')
 
 
 // 2.
 buttonGenerator.addEventListener('click', function(){
+  reset();
+  giocoFinito = false; 
+  const messaggioDiv = document.querySelector('.messaggio');
+  messaggioDiv.textContent = '';
+  punteggio = 0
+  generatePlay();
+})
 
-  squareNumbers = levels[levelSelect.value]
-  // 3
-  const contenitore = document.querySelector('.game-wrapper')
-  contenitore.classList.remove('d-none')
+/************FUNZIONI************/ 
 
+// funzione per generare una cella nella griglia
+function createSquare(index) {
+  const square = document.createElement('div');
+  square.className = 'square';
+  square.classList.add('square' + squareNumbers)
+  square._squareID = index;
+  return square;
+}
+
+// funzione per generare numeri random
+function generaNumeroCasuale(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// Funzione per generare le bombe
+function generaBombe() {
+  bombe = [];
+  while (bombe.length < 16) {
+    const numeroCasuale = generaNumeroCasuale(1, squareNumbers + 1);
+    if (!bombe.includes(numeroCasuale)) {
+      bombe.push(numeroCasuale);
+    }
+  }
+}
+
+// Funzione per terminare il gioco e mostrare il punteggio
+function fineGioco(vittoria) {
+  const messaggioDiv = document.querySelector('.messaggio');
+  if (vittoria) {
+    messaggioDiv.textContent = `Hai vinto! Il tuo punteggio è ` +punteggio;
+  } else {
+    messaggioDiv.textContent = `Hai perso! Il tuo punteggio è ` +punteggio;
+  }
+
+  giocoFinito = true; // Imposta il gioco come finito
+
+  // Congela la griglia
+  const celle = document.querySelectorAll('.square');
+  celle.forEach(function (cella) {
+    cella.removeEventListener('click', function () { });
+  });
+}
+
+// funzione di reset
+function reset () {
+  const contenitore = document.querySelector('.wrapper')
   contenitore.innerHTML = '';
+}
+
+// funzione per attivare il tasto play
+function generatePlay () {
+ 
+  squareNumbers = levels[levelSelect.value]
+  const grid = document.createElement('div');
+  grid.className = 'game-wrapper'
 
   // 4.
   for (let i = 1; i <= squareNumbers; i++) {
     // 5.
     const square = createSquare(i);
-    
-    // 6.
-    square.addEventListener('click', function(){
-      // determino se l'indice è pari o dispari
-      const oddEven = i % 2 === 0 ? 'even' : 'odd';
-
-      // 7.
-      this.classList.toggle('clicked')
-      this.classList.toggle(oddEven)
-      console.log(this)
-      console.log(i)
-    })
-
     // 8.
-    contenitore.append(square);
+    grid.append(square);
   }
-})
 
-/************FUNZIONI************/ 
-function createSquare(index) {
-  const square = document.createElement('div');
-  square.className = 'square';
-  square.classList.add('square' + squareNumbers)
-  square.innerHTML = `<span>${index}</span>`;
-  square._squareID = index;
+  contenitore.append(grid)
 
-  return square;
+  // Genera le bombe
+  generaBombe();
+
+  // aggiungo un gestore di eventi a tutte le celle
+  const celle = document.querySelectorAll('.square');
+  celle.forEach(function(cella) {
+    cella.addEventListener('click', function() {
+      if (giocoFinito || this.classList.contains('clicked')) {
+        return;
+      }
+
+      const numeroCella = this._squareID;
+
+      // verifica se la cella è una bomba
+      if (bombe.includes(numeroCella)) {
+        this.classList.add('bomba');
+        fineGioco(false)
+      } else {
+        this.classList.add('vuoto');
+        punteggio++;
+        console.log(punteggio)
+      }
+      if (document.querySelectorAll('.square.clicked').length === squareNumbers - 16) {
+        fineGioco(true);
+      }
+    })
+  })
 }
-
-function reset() {
-  contenitore.innerHTML = '';
-}
-
-
-
