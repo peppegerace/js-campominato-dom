@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: cadetblue;
+}
+
+header {
+  background-color: white;
+  height: 90px;
+  z-index: 999;
+}
+
+main {
+  height: calc(100% - 90px);
+}
+
+
+.btn-custom {
+  padding: 10px 40px;
+  background-color: green;
+  color: white;
+  border: 1px solid black;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.game-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 600px;
+  height: 600px;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% / 10);
+  aspect-ratio: 1 / 1;
+  background-color: brown;
+  color: white;
+  font-size: 24px;
+  border: 2px solid white;
+  cursor: pointer;
+}
+.square span {
+  display: none;
+}
+
+.clicked {
+  background-color: cadetblue;
+}
+
+.square.clicked span {
+  display: block;
+}
+
+.square.clicked.odd {
+  background-color: coral;
+}
+
+
+.square.clicked.even {
+  background-color: darkcyan;
+}
+
+.square100 {
+  width: calc(100% / 10);
+}
+
+.square81 {
+  width: calc(100% / 9);
+}
+
+.square49 {
+  width: calc(100% / 7);
+}
